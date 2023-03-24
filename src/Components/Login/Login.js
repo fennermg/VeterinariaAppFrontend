@@ -13,8 +13,8 @@ export default function Login(){
                         placeholder='Ingresa tu usuario'
                     />
                 </div>
-                <div>
-                    <label className='text-lg font-medium'>contraseña</label>
+                <div className='mt-2'>
+                    <label className='text-lg font-medium'>Contraseña</label>
                     <input
                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
                         placeholder='Ingresa tu contraseña'
