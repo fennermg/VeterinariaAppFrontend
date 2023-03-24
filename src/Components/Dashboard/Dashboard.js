@@ -6,7 +6,10 @@ import { RiDashboardLine,
     RiFolderUserLine, 
     RiLogoutBoxRLine,
     RiMenuFill,
-    RiCloseLine } from 'react-icons/ri';
+    RiCloseLine,
+    RiSearchLine,
+    RiNotification2Line,
+    RiArrowDownSLine } from 'react-icons/ri';
 
 export default function Dashboard(){
 
@@ -70,7 +73,31 @@ export default function Dashboard(){
             </button>
             {/* Content */}
             <div className='col-span-5'>
-                Prueba
+                {/* Header */}
+                <header>
+                    {/* Search */}
+                    <form>
+                        <div className='items-center flex'>
+                            <RiSearchLine/>
+                            <input type='text' className='bg-red-200' placeholder='Buscar'/>
+                        </div>
+                    </form>
+                    {/* User */}
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <RiNotification2Line/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Fenner Mena <RiArrowDownSLine/>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>
             </div>
         </div>
     )
