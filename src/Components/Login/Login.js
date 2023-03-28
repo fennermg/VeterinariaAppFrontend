@@ -17,21 +17,14 @@ export default function Login(){
                 user, password
             })
             .then(res=>{
-                if(res.data == "Encontrado"){
+                if(res.data = "Encontrado"){
                     history("/Dashboard")
-                }else if(res.data == "Invalido"){
-                    alert("User have not sign up")
                 }
-            })
-            .catch(e=>{
-                alert("wrong details")
-                console.log(e);
             })
         }catch(e){
             console.log(e);
         }
     }
-    
     return(
         <div className='bg-white px-10 py-20 rounded-3xl boder-2 border-gray-100'>
             <h1 className='text-5xl font-semibold'>Bienvenido de nuevo!</h1>
@@ -61,12 +54,12 @@ export default function Login(){
                             type="checkbox"
                             id='remember'
                         />
-                        <label className='m-2 font-medium text-base' htmlFor="remember">Recuerda mi contraseña</label>
+                        <label className='m-2 font-medium text-base' for="remember">Recuerda mi contraseña</label>
                     </div>
                     <button className='font-medium text-base text-violet-500'>Se me olvidó mi contraseña</button>
                 </div>
                 <div className='mt-8 flex flex-col gap-y-4'>
-                    <button onClick={submit} className='active:scale-[.98] active:duration-75 transition-all hover:scale-[.1.01] ease-in-out bg-violet-500 text-white text-lg font-bold py-3 rounded-xl'>Acceder</button>
+                    <button onClick={submit}className='active:scale-[.98] active:duration-75 transition-all hover:scale-[.1.01] ease-in-out bg-violet-500 text-white text-lg font-bold py-3 rounded-xl'>Acceder</button>
                 </div>
             </div>
         </div>
