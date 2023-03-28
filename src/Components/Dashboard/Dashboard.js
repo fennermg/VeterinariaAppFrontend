@@ -28,7 +28,7 @@ export default function Dashboard(){
                 <div className='text-center p-8'>
                     <img src="nicavets.png"/>
                 </div>
-                <div className='flex flex-col justify-between h-[650px]'>
+                <div className='flex flex-col justify-between h-[450px]'>
                     {/* Menu */}
                     <nav>
                         <ul>
