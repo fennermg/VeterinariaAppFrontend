@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import { RiDashboardLine, 
     RiHealthBookLine, 
@@ -17,6 +18,7 @@ export default function Dashboard(){
     const handleSidebar = () =>{
         setSidebar(!sidebar);
     }
+    const location = useLocation()
 
     return(
         <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
@@ -26,7 +28,7 @@ export default function Dashboard(){
             w-full h-full overflow-y-scroll col-span-1 p-8 border-r`}>
                 {/* Logo */}
                 <div className='text-center p-8'>
-                    <img src="nicavets.png"/>
+                    <img alt="logo"src="nicavets.png"/>
                 </div>
                 <div className='flex flex-col justify-between h-[450px]'>
                     {/* Menu */}
@@ -34,7 +36,7 @@ export default function Dashboard(){
                         <ul>
                             <li>
                                 <a 
-                                href="#" 
+                                href="http://localhost:3000/Dashboard" 
                                 className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'>
                                     <RiDashboardLine/>
                                     Dashboard
@@ -92,7 +94,7 @@ export default function Dashboard(){
                             </li>
                             <li>
                                 <a href="#">
-                                    Fenner Mena <RiArrowDownSLine/>
+                                    {location.state.id} <RiArrowDownSLine/>
                                 </a>
                             </li>
                         </ul>
