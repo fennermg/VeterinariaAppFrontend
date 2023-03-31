@@ -57,7 +57,7 @@ export default function Sidebar(){
                     </nav>
                     {/* Logout */}
                     <div className='flex flex-col gap-4'>
-                        <a href = '#' className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'>
+                        <a href = 'http://localhost:3000' className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'>
                             <RiLogoutBoxRLine/>
                             Salir
                         </a>
