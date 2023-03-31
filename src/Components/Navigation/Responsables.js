@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import '../../../src/index.css';
 import Datepicker from 'react-tailwindcss-datepicker';
-import AddPatient from '../Modals/AddPatient';
+import AddResponsable from '../Modals/AddResponsable';
 
 import { RiDashboardLine, 
     RiHealthBookLine, 
@@ -16,7 +16,7 @@ import { RiDashboardLine,
 import Sidebar from './Sidebar';
 import Header from './Header';
 
-export default function Patients(){
+export default function Responsables(){
 
     const [sidebar, setSidebar] = useState(false);
     const handleSidebar = () =>{
@@ -48,11 +48,11 @@ export default function Patients(){
                 <div className='p-4 lg:p-12 bg-gray-100'>
                     {/* Title */}
                     <div>
-                        <h1 className='text-3xl font-semibold'>Pacientes</h1>
+                        <h1 className='text-3xl font-semibold'>Responsables</h1>
                     </div>
                     {/* Calendar */}
                     <div className='bg-white mt-6 rounded-xl p-12 flex items-center lg:w-[90%] w-full'>
-                        <div>
+                    <div>
                             <div className='relative'>
 
                                 <button  
@@ -130,7 +130,7 @@ export default function Patients(){
                         </div>
                         
                     </div> 
-                    <AddPatient isVisible={showModal} onClose={()=>setShowModal(false)}/>   
+                    <AddResponsable isVisible={showModal} onClose={()=>setShowModal(false)}/>   
                 </div>
             </div>
         </div>   
