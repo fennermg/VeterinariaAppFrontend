@@ -51,7 +51,7 @@ export default function Patients(){
                         <h1 className='text-3xl font-semibold'>Pacientes</h1>
                     </div>
                     {/* Calendar */}
-                    <div className='bg-white mt-6 rounded-xl p-12 flex items-center lg:w-[90%] w-full'>
+                    <div className='bg-white mt-6 border-2 rounded-xl p-12 flex items-center lg:w-[90%] w-full'>
                         <div>
                             <div className='relative'>
 

@@ -7,7 +7,7 @@ const AddPatient = ({ isVisible, onClose }) => {
 
     return(
         <div className='fixed inset-0 bg-slate-600 bg-opacity-25 flex justify-center items-center'>
-            <div className='w-[600px] flex flex-col'>
+            <div className='top-0 right-0 w-[50vw] bg-white pl-2 fixed h-full ease-in-out duration-10000'>
                 
                 <div className='bg-white flex items-center justify-between'>
                     <button className='text-black p-5 text-xl place-self-end' onClick={()=>onClose()}>
