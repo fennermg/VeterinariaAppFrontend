@@ -107,6 +107,18 @@ const AddPatient = ({ isVisible, onClose }) => {
                                 </option>
                             </select>
                         </div>
+                        <button  
+                        className='text-white justify-between bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
+                        
+                        >
+                            Guardar
+                        </button>
+                        <button  
+                        className='text-white justify-between bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
+                        
+                        >
+                            Cerrar
+                        </button>
                     </form>
                 </div>
             </div>
