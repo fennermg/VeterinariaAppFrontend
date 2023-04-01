@@ -3,6 +3,7 @@ import {useState} from 'react';
 import '../../../src/index.css';
 import Datepicker from 'react-tailwindcss-datepicker';
 import AddPatient from '../Modals/AddPatient';
+import Modal from '../Modals/Modal';
 
 import { RiDashboardLine, 
     RiHealthBookLine, 
@@ -130,7 +131,7 @@ export default function Patients(){
                         </div>
                         
                     </div> 
-                    <AddPatient isVisible={showModal} onClose={()=>setShowModal(false)}/>   
+                    <Modal></Modal>
                 </div>
             </div>
         </div>   
