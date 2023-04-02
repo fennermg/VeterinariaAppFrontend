@@ -5,7 +5,7 @@ import { fetchAPi } from "../../Services/Services";
 export default function Login() {
   const history = useNavigate();
   const [data, setdata] = useState({
-    user: "",
+    username: "",
     password: "",
   });
 
@@ -18,12 +18,16 @@ export default function Login() {
 
   async function submit(e) {
     e.preventDefault();
-    if (data.user !== "" || data.password !== "") {
+    if (data.username !== "" || data.password !== "") {
       await fetchAPi(data).then(function (response) {
-        if (response.data === "Encontrado") {
-          history("/Dashboard", { state: { id: data.user } });
-        } else {
+        if (response.status === 200) {
+          console.log(response.data.user.role)
+          history("/Dashboard", { state: { id: response.data.role } });
+          //esto de abajo no funciona y no se porque
+        } else if (response.status === 401 || response.status === 403) {
           alert("Usuario y Contraseña invalidos");
+        } else {
+          alert("Error desconocido");
         }
       });
     } else {
@@ -42,7 +46,7 @@ export default function Login() {
           <div>
             <label className="text-lg font-medium">Usuario</label>
             <input
-              name="user"
+              name="username"
               type="text"
               className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
               placeholder="Ingresa tu usuario"

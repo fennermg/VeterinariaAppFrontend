@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export const fetchAPi = async (data) =>{
-    const {user,password} = data
+    const {username,password} = data
     return axios({
         method: 'post',
-        url: 'http://localhost:5000/api/user',
+        url: 'http://localhost:5000/api/auth/login',
         data: {
-            user: user,
+            username: username,
             password:password
         },
         headers: {'Content-Type' : 'application/json'}
