@@ -41,7 +41,8 @@ export default function Login() {
       <p className="font-medium text-lg text-gray-500 mt-4">
         Bienvenido, por favor ingresa tu información.
       </p>
-      <form>
+      <form 
+      onSubmit={submit}>
         <div className="mt-8">
           <div>
             <label className="text-lg font-medium">Usuario</label>
@@ -78,7 +79,8 @@ export default function Login() {
           </div>
           <div className="mt-8 flex flex-col gap-y-4">
             <button
-              onClick={submit}
+              type = 'submit'
+              
               className="active:scale-[.98] active:duration-75 transition-all hover:scale-[.1.01] ease-in-out bg-violet-500 text-white text-lg font-bold py-3 rounded-xl"
             >
               Acceder

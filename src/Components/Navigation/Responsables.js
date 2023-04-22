@@ -1,18 +1,14 @@
 import React from 'react';
 import {useState} from 'react';
 import '../../../src/index.css';
-import Datepicker from 'react-tailwindcss-datepicker';
 import AddResponsable from '../Modals/AddResponsable';
+import ModalRoot from '../Modals/components/ModalRoot';
+import ModalService from '../Modals/services/ModalService';
 
-import { RiDashboardLine, 
-    RiHealthBookLine, 
-    RiFolderUserLine, 
-    RiLogoutBoxRLine,
+import { 
     RiMenuFill,
     RiCloseLine,
-    RiSearchLine,
-    RiNotification2Line,
-    RiArrowDownSLine } from 'react-icons/ri';
+    } from 'react-icons/ri';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
@@ -22,15 +18,10 @@ export default function Responsables(){
     const handleSidebar = () =>{
         setSidebar(!sidebar);
     }
-    const [value, setValue] = useState({
-        startDate: new Date(),
-        endDate: new Date().setMonth(11)
-    })
-    const handleValueChange = (newValue) =>{
-        console.log("newValue:", newValue);
-        setValue(newValue);
-    }
-    const [showModal, setShowModal] = useState(false);
+
+    const addModal = () => {
+        ModalService.open(AddResponsable);
+      };
 
     return(
         <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
@@ -55,12 +46,13 @@ export default function Responsables(){
                     <div>
                             <div className='relative'>
 
-                                <button  
-                                className='text-white top-0 right-0 bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
-                                onClick={()=> setShowModal(true)}
-                                >
-                                    Agregar
-                                </button>
+                            <ModalRoot/>
+                                        <button  
+                                            className='text-white top-0 right-0 bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
+                                            onClick={addModal}
+                                        >
+                                            Agregar
+                                        </button>
                             </div>
                             <table className='w-full '>
                                 <thead className=''>
@@ -129,8 +121,7 @@ export default function Responsables(){
                             </table>
                         </div>
                         
-                    </div> 
-                    <AddResponsable isVisible={showModal} onClose={()=>setShowModal(false)}/>   
+                    </div>   
                 </div>
             </div>
         </div>   

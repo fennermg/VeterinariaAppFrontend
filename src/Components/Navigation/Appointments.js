@@ -4,6 +4,7 @@ import '../../../src/index.css';
 import ModalRoot from '../Modals/components/ModalRoot';
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from '../Modals/AddPatient';
+import AddAppointment from '../Modals/AddAppointment';
 import Table, { AvatarCell, SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
 
 
@@ -17,65 +18,65 @@ import Header from './Header';
 const getData = () => {
     const data = [
       {
-        nombre: 'Luna Herrera',
-        especie: 'Perro',
-        raza: 'Mestizo',
-        sexo: 'Hembra',
-        color: 'Cafe con negro',
-        castrado: 'Si',
+        fecha: '04/20/2023',
+        hora: '02:00 PM',
+        motivo: 'Cirugia',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Luna Herrera',
         responsable: 'Obed Herrera',
       },
       {
-        nombre: 'Sir Browns',
-        especie: 'Perro',
-        raza: 'Mestizo',
-        sexo: 'Macho',
-        color: 'Blanco con manchas cafe',
-        castrado: 'Si',
+        fecha: '04/20/2023',
+        hora: '09:00 AM',
+        motivo: 'Monitoreo',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Sir Browns',
         responsable: 'Franck Melendez',
       },
       {
-        nombre: 'Hilda Rosa Maria',
-        especie: 'Loro',
-        raza: 'Psittacoidea',
-        sexo: 'Hembra',
-        color: 'Verde con rojo',
-        castrado: 'No',
+        fecha: '04/21/2023',
+        hora: '01:00 PM',
+        motivo: 'Monitoreo',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Max',
+        responsable: 'Bosco Castillo',
+      },
+      {
+        fecha: '04/21/2023',
+        hora: '02:00 PM',
+        motivo: 'Cirugia',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Merlina',
         responsable: 'Orlando Varela',
       },
       {
-        nombre: 'Louis Vargas',
-        especie: 'Gato',
-        raza: 'Mestizo',
-        sexo: 'Macho',
-        color: 'Negro',
-        castrado: 'Si',
-        responsable: 'Diego Vargas',
+        fecha: '04/21/2023',
+        hora: '04:00 PM',
+        motivo: 'Monitoreo',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Hilda Rosa Maria',
+        responsable: 'Orlando Varela',
       },
       {
-        nombre: 'Kibara Vargas',
-        especie: 'Gato',
-        raza: 'Mestizo',
-        sexo: 'Hembra',
-        color: 'Blanco',
-        castrado: 'Si',
+        fecha: '04/22/2023',
+        hora: '02:00 PM',
+        motivo: 'Cirugia',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Neko Vargas',
         responsable: 'Diego Vargas',
-      },
-      {
-        nombre: 'Luna Herrera',
-        especie: 'Perro',
-        raza: 'Mestizo',
-        sexo: 'Hembra',
-        color: 'Cafe con negro',
-        castrado: 'Si',
-        responsable: 'Obed Herrera',
       },
     ]
     return [...data, ...data, ...data]
   }
 
 
-export default function Patients(){
+export default function Appointments(){
 
     const [sidebar, setSidebar] = useState(false);
     const handleSidebar = () =>{
@@ -84,30 +85,30 @@ export default function Patients(){
 
     const columns = React.useMemo(() => [
         {
-          Header: "Nombre",
-          accessor: 'nombre',
+          Header: "Fecha",
+          accessor: 'fecha',
           Cell: clickeableCell,
         },
         {
-          Header: "Especie",
-          accessor: 'especie',
+          Header: "Hora",
+          accessor: 'hora',
         },
         {
-          Header: "Raza",
-          accessor: 'raza',
+          Header: "Motivo",
+          accessor: 'motivo',
           Cell: StatusPill,
         },
         {
-          Header: "Sexo",
-          accessor: 'sexo',
+          Header: "Estado",
+          accessor: 'estado',
         },
         {
-          Header: "Color",
-          accessor: 'color',
+          Header: "Tiempo estimado",
+          accessor: 'tiempo_estimado',
         },
         {
-          Header: "Castrado",
-          accessor: 'castrado',
+          Header: "Paciente",
+          accessor: 'paciente',
         },
         {
           Header: "Responsable",
@@ -120,7 +121,7 @@ export default function Patients(){
       const data = React.useMemo(() => getData(), [])
 
     const addModal = () => {
-        ModalService.open(AddPatient);
+        ModalService.open(AddAppointment);
       };
 
     return(
@@ -139,7 +140,7 @@ export default function Patients(){
                 <div className='p-4 lg:p-12 bg-gray-100'>
                     {/* Title */}
                     <div>
-                        <h1 className='text-3xl font-semibold'>Pacientes</h1>
+                        <h1 className='text-3xl font-semibold'>Citas</h1>
                     </div>
                     {/* Table */}
                     <div className=' bg-white mt-6 border-2 rounded-xl p-12 flex items-center lg:w-[100%] w-full'>
