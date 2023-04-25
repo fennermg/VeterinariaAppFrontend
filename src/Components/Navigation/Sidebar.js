@@ -62,6 +62,14 @@ export default function Sidebar(){
                                     <RiFolderUserLine/>
                                     Citas
                                 </Link>
+                            </li>
+                            <li>
+                                <Link 
+                                to="http://localhost:3000/Users" 
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-xl font-semibold hover:text-white rounded-lg transition-colors'>
+                                    <RiFolderUserLine/>
+                                    Usuarios
+                                </Link>
                             </li> 
                         </ul>
                     </nav>

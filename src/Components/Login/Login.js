@@ -21,7 +21,7 @@ export default function Login() {
     if (data.username !== "" || data.password !== "") {
       await fetchAPi(data).then(function (response) {
         if (response.status === 200) {
-          console.log(response.data.user.role)
+          console.log(response.data.username.role)
           history("/Dashboard", { state: { id: response.data.role } });
           //esto de abajo no funciona y no se porque
         } else if (response.status === 401 || response.status === 403) {
@@ -80,7 +80,7 @@ export default function Login() {
           <div className="mt-8 flex flex-col gap-y-4">
             <button
               type = 'submit'
-              
+
               className="active:scale-[.98] active:duration-75 transition-all hover:scale-[.1.01] ease-in-out bg-violet-500 text-white text-lg font-bold py-3 rounded-xl"
             >
               Acceder
