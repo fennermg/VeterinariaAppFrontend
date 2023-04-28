@@ -10,8 +10,8 @@ export default function Header(){
     const location = useLocation()
     
     return(
-        <div className='col-span-5'>
-            <header className='flex flex-col md:flex-row gap-4 items-center justify-between lg:pl-12 p-4 w-full'>
+        <div className=''>
+            <header className='flex flex-col md:flex-row gap-2 items-center justify-between lg:pl-12 p-4 w-full'>
                     {/* Search */}
                     <form className='w-full md:[40%] lg:w-[30%] order-1 md:-order-none'>
                         <div className='relative'>

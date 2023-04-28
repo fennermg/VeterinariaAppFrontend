@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import ModalService from '../services/ModalService';
 
 export default function ModalRoot() {

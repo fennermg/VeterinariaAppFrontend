@@ -8,58 +8,46 @@ import { RiMenuFill, RiCloseLine, } from 'react-icons/ri';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import AddUser from '../Modals/AddUser';
-import { fetchExistingUsers } from '../../Services/Services';
-
-const getData = () => {
-    const data = [
-      fetchExistingUsers
-    ]
-    return [...data]
-  }
-
+import { fetchUser, getUsers } from '../../Services/Services';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function Users(){
-    /**
-    async function getData(e){
-        await fetchExistingUsers(data).then(function(response){
-            data = JSON.parse(data);
-            console.log(data);
-        })
-    }*/
 
-    const [sidebar, setSidebar] = useState(false);
-    const handleSidebar = () =>{
-        setSidebar(!sidebar);
+    const [users, setUsers] = useState([]);
+    const [filter, setFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(5);
+
+    useEffect(()=>{
+        getUsers().then(response => setUsers(response.data));
+    },[]);
+
+    const handleFilterChange = (event) => {
+        const value = event.target.value.toLowerCase();
+        setFilter(value);
+        setCurrentPage(1);
     }
 
-    const columns = React.useMemo(() => [
-        {
-          Header: "Usuario",
-          accessor: 'username',
-          Cell: clickeableCell,
-        },
-        {
-          Header: "Rol",
-          accessor: 'role',
-        },
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    }
 
-      ], [])
-    
-      const data = React.useMemo(() => getData(), [])
+    const filteredUsers = users.filter(user => user.username.toLowerCase().includes(filter));
+
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
     const addModal = () => {
         ModalService.open(AddUser);
-      };
+    };
 
     return(
-        <div className='max-h-screen grid grid-col-1 lg:grid-cols-6'>
+        <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
             {/* Sidebar */}
             <Sidebar/>
-            <button 
-            onClick={handleSidebar} 
-            className='block lg:hidden absolute bottom-4 right-4 bg-violet-500 p-2 text-white rounded-full text-2xl'>
-                {sidebar ? <RiCloseLine /> : <RiMenuFill/>}
-            </button>
+
             {/* Header */}
             <div className='col-span-5'>
                 <Header/>
@@ -82,11 +70,55 @@ export default function Users(){
                                     </button>  
                             </div>
                             <div className='mt-5'>
-                             <Table columns={columns} data={data} />
-                            </div>
-                            
+                                <input
+                                    className='border rounded py-2 px-3 mb-4'
+                                    type='text'
+                                    placeholder='Filtrar por usuario'
+                                    value={filter}
+                                    onChange={handleFilterChange}
+                                />
+                                <table className='w-full border-collapse table-auto'>
+                                    <thead>
+                                        <tr className='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
+                                            <th className='py-3 px-6 text-left'>
+                                                Usuario
+                                            </th>
+                                            <th className='py-3 px-6 text-left'>
+                                                Rol
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='text-gray-600 text-sm font-light'>
+                                        {currentUsers.map(user => (
+                                            <tr key={user.username} className='border-b border-gray-200 hover:bg-gray-100'>
+                                                <td className='py-3 px-6 text-left'>{user.username}</td>
+                                                <td className='py-3 px-6 text-left'>{user.role}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <div className='flex justify-center mt-4'>
+                                    <nav>
+                                        <ul className='flex items-center'>
+                                            {Array(Math.ceil(filteredUsers.length / usersPerPage)).fill().map((_,i)=>(
+                                                <li key={i}>
+                                                    <button
+                                                        className={`px-3 py-2 mx-1 rounded-md font-medium ${
+                                                            currentPage === i+1
+                                                            ? 'bg-gray-900 text-white'
+                                                            : 'bg-white text-gray-900'
+                                                        } hover:bg-gray-100 focus:outline-none`}
+                                                        onClick={()=> handlePageChange(i+1)}
+                                                    >
+                                                        {i+1}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>    
                         </div>
-                        
                     </div> 
                </div>
             </div>

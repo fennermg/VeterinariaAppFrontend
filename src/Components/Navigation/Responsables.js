@@ -27,11 +27,7 @@ export default function Responsables(){
         <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
             {/* Sidebar */}
             <Sidebar/>
-            <button 
-            onClick={handleSidebar} 
-            className='block lg:hidden absolute bottom-4 right-4 bg-violet-500 p-2 text-white rounded-full text-2xl'>
-                {sidebar ? <RiCloseLine /> : <RiMenuFill/>}
-            </button>
+
             {/* Header */}
             <div className='col-span-5'>
                 <Header/>

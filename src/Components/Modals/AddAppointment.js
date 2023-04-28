@@ -4,7 +4,6 @@ import ModalBody from "../Modals/components/ModalBody";
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from './AddPatient';
 import ModalRoot from '../Modals/components/ModalRoot';
-import Datepicker from "react-tailwindcss-datepicker";
 import 'flowbite';
 
 const addModal = () => {
@@ -73,10 +72,6 @@ export default function AddAppointment(props) {
                             <label className='p-4 font-semibold'>
                                 Fecha
                             </label>
-                            <Datepicker
-                                value={value}
-                                onChange={handleValueChange}
-                            />
                             <label className='p-4 font-semibold'>
                                 Hora
                             </label>

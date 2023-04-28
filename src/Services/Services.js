@@ -27,12 +27,28 @@ export const fetchUser = async (data) =>{
     })
 }
 
-export const fetchExistingUsers = async (data) =>{
-    const {username, role} = data
+export const getUsers = async()=>{
+    /*const response = await axios('http://localhost:5000/api/user/');
+    const data = await response.json();
+    return data;*/
+
     return axios({
         method: 'get',
         url: 'http://localhost:5000/api/user/',
-    }
-    )
-    
-}
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+};
+
+export const getPatients = async()=>{
+    /*const response = await axios('http://localhost:5000/api/user/');
+    const data = await response.json();
+    return data;*/
+
+    return axios({
+        method: 'get',
+        url: 'http://localhost:5000/api/paciente/',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+};

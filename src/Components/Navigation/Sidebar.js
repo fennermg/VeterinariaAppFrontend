@@ -18,10 +18,10 @@ export default function Sidebar(){
     }
 
     return(
-        <div>
-            <div className={`fixed lg:static w-[80%] md:w-[40%] lg:w-full top-0 z-50 bg-white 
-            ${sidebar ? "-left-0" : "-left-full"}  
-            w-full h-full col-span-1 p-8 border-r`}>
+        <div className=''>
+            <div className={`fixed lg:static w-[80%] md:w-[40%] lg:w-full top-0 z-50 bg-white transition-all ${
+                sidebar ? "-left-0" : "-left-full"}  
+                w-full h-full col-span-1 p-8 border-r`}>
                 {/* Logo */}
                 <div className='text-center p-15 pt-0 mt-0'>
                     <img alt="logo"src="nicavets.png" className='h-auto'/>
@@ -33,7 +33,7 @@ export default function Sidebar(){
                             <li>
                                 <Link 
                                 to ='http://localhost:3000/Dashboard'
-                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-xl font-semibold hover:text-white rounded-lg transition-colors'
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-base font-semibold hover:text-white rounded-lg transition-colors'
                                 >
                                     <RiDashboardLine />
                                     Dashboard
@@ -42,31 +42,32 @@ export default function Sidebar(){
                             <li>
                                 <Link 
                                 to="http://localhost:3000/Patients" 
-                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-xl font-semibold hover:text-white rounded-lg transition-colors'>
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-base font-semibold hover:text-white rounded-lg transition-colors'>
                                     <RiHealthBookLine/>
                                     Pacientes
                                 </Link>
                             </li> 
-                            <li>
-                                <Link 
-                                to="http://localhost:3000/Responsables" 
-                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-xl font-semibold hover:text-white rounded-lg transition-colors'>
-                                    <RiTeamFill/>
-                                    Responsables
-                                </Link>
-                            </li>
+                            
                             <li>
                                 <Link 
                                 to="http://localhost:3000/Appointments" 
-                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-xl font-semibold hover:text-white rounded-lg transition-colors'>
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-base font-semibold hover:text-white rounded-lg transition-colors'>
                                     <RiFolderUserLine/>
                                     Citas
                                 </Link>
                             </li>
                             <li>
                                 <Link 
+                                to="http://localhost:3000/Responsables" 
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-base font-semibold hover:text-white rounded-lg transition-colors'>
+                                    <RiTeamFill/>
+                                    Responsables
+                                </Link>
+                            </li>
+                            <li>
+                                <Link 
                                 to="http://localhost:3000/Users" 
-                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-xl font-semibold hover:text-white rounded-lg transition-colors'>
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-base font-semibold hover:text-white rounded-lg transition-colors'>
                                     <RiFolderUserLine/>
                                     Usuarios
                                 </Link>
@@ -75,14 +76,22 @@ export default function Sidebar(){
                     </nav>
                     {/* Logout */}
                     <div className='flex flex-col gap-4'>
-                        <a href = 'http://localhost:3000' className='flex items-center gap-4 hover:bg-violet-500 p-4 text-xl text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'>
+                        <a href = 'http://localhost:3000' 
+                        className='flex items-center gap-4 hover:bg-violet-500 p-4 text-base text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'>
                             <RiLogoutBoxRLine/>
                             Salir
                         </a>
                     </div>
-                </div>    
+                    
+                </div>
+                   
             </div>
-            
-        </div>
+            {/* Btn menu movil*/}
+            <button 
+            onClick={handleSidebar} 
+            className='block lg:hidden fixed bottom-10 right-6 bg-violet-500 p-2 text-white rounded-full text-2xl'>
+                {sidebar ? <RiCloseLine /> : <RiMenuFill/>}
+            </button>
+        </div>   
     )
 }

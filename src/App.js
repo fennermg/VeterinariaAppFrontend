@@ -1,3 +1,4 @@
+import React from 'react';
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Patients from "./Components/Navigation/Patients";
 import Login from "./Components/Login/Login";

@@ -126,7 +126,7 @@ const AddPatient = () => {
 }
 
 export default AddPatient;*/
-
+import React from 'react';
 import Modal from "../Modals/components/Modal";
 import ModalBody from "../Modals/components/ModalBody";
 import ModalRoot from '../Modals/components/ModalRoot';

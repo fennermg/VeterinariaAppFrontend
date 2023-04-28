@@ -2,12 +2,36 @@ import * as React from 'react';
 import { useState } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Sidebar from '../Navigation/Sidebar';
+import Table, { AvatarCell, SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
 
 import { 
     RiMenuFill,
     RiCloseLine } from 'react-icons/ri';
-import Datepicker from 'react-tailwindcss-datepicker';
 import Header from '../Navigation/Header';
+
+const getData = () => {
+    const data = [
+      {
+        fecha: '04/20/2023',
+        hora: '02:00 PM',
+        motivo: 'Cirugia',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Luna Herrera',
+        responsable: 'Obed Herrera',
+      },
+      {
+        fecha: '04/20/2023',
+        hora: '09:00 AM',
+        motivo: 'Monitoreo',
+        estado: 'Programado',
+        tiempo_estimado: '30 min',
+        paciente: 'Sir Browns',
+        responsable: 'Franck Melendez',
+      },
+    ]
+    return [...data, ...data, ...data]
+  }
 
 export default function Dashboard(){
 
@@ -24,16 +48,29 @@ export default function Dashboard(){
         setValue(newValue);
     }
 
+    const columns = React.useMemo(() => [
+        {
+          Header: "Fecha",
+          accessor: 'fecha',
+          Cell: clickeableCell,
+        },
+        {
+          Header: "Hora",
+          accessor: 'hora',
+        },
+        {
+          Header: "Motivo",
+          accessor: 'motivo',
+          Cell: StatusPill,
+        },
+        ], [])
+    
+      const data = React.useMemo(() => getData(), [])
+
     return(
-        <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
+        <div className='max-h-screen grid grid-col-1 lg:grid-cols-6 md:grid-cols-2'>
             {/* Sidebar */}
-                <Sidebar/>
-            {/* Btn menu movil*/}
-            <button 
-            onClick={handleSidebar} 
-            className='block lg:hidden absolute bottom-4 right-4 bg-violet-500 p-2 text-white rounded-full text-2xl'>
-                {sidebar ? <RiCloseLine /> : <RiMenuFill/>}
-            </button>
+                <Sidebar/> 
             {/* Content */}
             <div className='col-span-5'>
                 {/* Header */}
@@ -44,15 +81,30 @@ export default function Dashboard(){
                     <div>
                         <h1 className='text-3xl font-semibold'>Casa Lupita</h1>
                     </div>
+                    <div className='grid grid-cols-2 gap-4'>
                     {/* Calendar */}
-                    <div className='bg-white mt-6 rounded-xl p-12 flex items-center lg:w-[50%] w-full'>
-                        <h1 className='flex items-center w-full'>
-                            <Datepicker
-                                value={value}
-                                onChange={handleValueChange}
-                            />
-                        </h1>
-                    </div>    
+                    <div className='bg-white mt-6 rounded-xl flex items-center'>
+                        <div className='p-12'>
+                            <div>
+                                <h1 className='text-2xl font-semibold text-center'>
+                                    Pacientes del dia
+                                </h1>
+                            </div>
+                            <Table columns={columns} data={data} />
+                        </div>
+                    </div>
+                    <div className='bg-white mt-6 rounded-xl flex items-center'>
+                        
+                        <div className='mt-5 p-12'>
+                            <div>
+                                <h1 className='text-2xl font-semibold text-center'>
+                                    Pacientes en cirugia
+                                </h1>
+                            </div>
+                            <Table columns={columns} data={data} />
+                        </div>
+                    </div>
+                    </div>  
                 </div>
             </div>
         </div>

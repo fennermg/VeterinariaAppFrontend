@@ -1,86 +1,22 @@
-import React from 'react';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import '../../../src/index.css';
 import ModalRoot from '../Modals/components/ModalRoot';
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from '../Modals/AddPatient';
-import Table, { AvatarCell, SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
-
-
-import { 
-    RiMenuFill,
-    RiCloseLine,
-    } from 'react-icons/ri';
+import Table, { SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
 import Sidebar from './Sidebar';
 import Header from './Header';
-
-const getData = () => {
-    const data = [
-      {
-        nombre: 'Luna Herrera',
-        especie: 'Perro',
-        raza: 'Mestizo',
-        sexo: 'Hembra',
-        color: 'Cafe con negro',
-        castrado: 'Si',
-        responsable: 'Obed Herrera',
-      },
-      {
-        nombre: 'Sir Browns',
-        especie: 'Perro',
-        raza: 'Mestizo',
-        sexo: 'Macho',
-        color: 'Blanco con manchas cafe',
-        castrado: 'Si',
-        responsable: 'Franck Melendez',
-      },
-      {
-        nombre: 'Hilda Rosa Maria',
-        especie: 'Loro',
-        raza: 'Psittacoidea',
-        sexo: 'Hembra',
-        color: 'Verde con rojo',
-        castrado: 'No',
-        responsable: 'Orlando Varela',
-      },
-      {
-        nombre: 'Louis Vargas',
-        especie: 'Gato',
-        raza: 'Mestizo',
-        sexo: 'Macho',
-        color: 'Negro',
-        castrado: 'Si',
-        responsable: 'Diego Vargas',
-      },
-      {
-        nombre: 'Kibara Vargas',
-        especie: 'Gato',
-        raza: 'Mestizo',
-        sexo: 'Hembra',
-        color: 'Blanco',
-        castrado: 'Si',
-        responsable: 'Diego Vargas',
-      },
-      {
-        nombre: 'Luna Herrera',
-        especie: 'Perro',
-        raza: 'Mestizo',
-        sexo: 'Hembra',
-        color: 'Cafe con negro',
-        castrado: 'Si',
-        responsable: 'Obed Herrera',
-      },
-    ]
-    return [...data, ...data, ...data]
-  }
-
+import { useEffect } from 'react';
+import axios from 'axios';
+import { getPatients } from '../../Services/Services';
 
 export default function Patients(){
 
-    const [sidebar, setSidebar] = useState(false);
-    const handleSidebar = () =>{
-        setSidebar(!sidebar);
-    }
+    const [patients, setPatients] = useState([]);
+
+    useEffect(()=>{
+      getPatients().then(response => setPatients(response.data));
+    },[])
 
     const columns = React.useMemo(() => [
         {
@@ -88,36 +24,9 @@ export default function Patients(){
           accessor: 'nombre',
           Cell: clickeableCell,
         },
-        {
-          Header: "Especie",
-          accessor: 'especie',
-        },
-        {
-          Header: "Raza",
-          accessor: 'raza',
-          Cell: StatusPill,
-        },
-        {
-          Header: "Sexo",
-          accessor: 'sexo',
-        },
-        {
-          Header: "Color",
-          accessor: 'color',
-        },
-        {
-          Header: "Castrado",
-          accessor: 'castrado',
-        },
-        {
-          Header: "Responsable",
-          accessor: 'responsable',
-          Filter: SelectColumnFilter,  // new
-          filter: 'includes',
-        },
       ], [])
     
-      const data = React.useMemo(() => getData(), [])
+    const data = React.useMemo(() => patients)
 
     const addModal = () => {
         ModalService.open(AddPatient);
@@ -127,16 +36,11 @@ export default function Patients(){
         <div className='max-h-screen grid grid-col-1 lg:grid-cols-6'>
             {/* Sidebar */}
             <Sidebar/>
-            <button 
-            onClick={handleSidebar} 
-            className='block lg:hidden absolute bottom-4 right-4 bg-violet-500 p-2 text-white rounded-full text-2xl'>
-                {sidebar ? <RiCloseLine /> : <RiMenuFill/>}
-            </button>
             {/* Header */}
             <div className='col-span-5'>
                 <Header/>
                 {/* Content */}
-                <div className='p-4 lg:p-12 bg-gray-100'>
+                <div className='p-4 lg:p-12 bg-gray-100 '>
                     {/* Title */}
                     <div>
                         <h1 className='text-3xl font-semibold'>Pacientes</h1>
@@ -153,12 +57,10 @@ export default function Patients(){
                                         Agregar
                                     </button>  
                             </div>
-                            <div className='mt-5'>
+                            <div className='mt-5 md:w-[100%]'>
                              <Table columns={columns} data={data} />
-                            </div>
-                            
+                            </div>   
                         </div>
-                        
                     </div> 
                </div>
             </div>

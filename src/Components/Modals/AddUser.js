@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import Modal from "../Modals/components/Modal";
 import ModalBody from "../Modals/components/ModalBody";
-import ModalService from '../Modals/services/ModalService';
 import ModalRoot from '../Modals/components/ModalRoot';
 import { fetchUser } from "../../Services/Services";
-import Role from "../Modals/components/Role";
 
 export default function AddUser(props) {
     const [data, setdata] = useState({
@@ -19,8 +17,6 @@ export default function AddUser(props) {
           [e.target.name]: e.target.value,
         });
       };
-
-      const [role, setRole] = React.useState();
     
       async function submit(e) {
         e.preventDefault();
