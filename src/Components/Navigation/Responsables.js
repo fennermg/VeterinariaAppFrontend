@@ -4,20 +4,37 @@ import '../../../src/index.css';
 import AddResponsable from '../Modals/AddResponsable';
 import ModalRoot from '../Modals/components/ModalRoot';
 import ModalService from '../Modals/services/ModalService';
-
-import { 
-    RiMenuFill,
-    RiCloseLine,
-    } from 'react-icons/ri';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { useEffect } from 'react';
+import { getResponsable } from '../../Services/Services';
 
 export default function Responsables(){
 
-    const [sidebar, setSidebar] = useState(false);
-    const handleSidebar = () =>{
-        setSidebar(!sidebar);
+    const [responsable, setResponsable] = useState([]);
+    const [filter, setFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [responsablePerPage] = useState(10);
+
+    useEffect(()=>{
+      getResponsable().then(response => setResponsable(response.data));
+    },[])
+
+    const handleFilterChange = (event) => {
+      const value = event.target.value.toLowerCase();
+      setFilter(value);
+      setCurrentPage(1);
     }
+
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    }
+
+    const filteredUsers = responsable.filter(responsable => responsable.nombre.toLowerCase().includes(filter));
+
+    const indexOfLastUser = currentPage * responsablePerPage;
+    const indexOfFirstUser = indexOfLastUser - responsablePerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
     const addModal = () => {
         ModalService.open(AddResponsable);
@@ -50,73 +67,69 @@ export default function Responsables(){
                                             Agregar
                                         </button>
                             </div>
-                            <table className='w-full '>
+                            <div className='mt-5'>
+                                <input
+                                    className='border rounded py-2 px-3 mb-4'
+                                    type='text'
+                                    placeholder='Filtrar por usuario'
+                                    value={filter}
+                                    onChange={handleFilterChange}
+                                />
+                            <table className='w-full shadow border-b rounded-md border-collapse table-auto'>
                                 <thead className=''>
-                                    <tr className='border-b-4'>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            No.
+                                    <tr className='bg-gray-50 text-gray-600 uppercase text-sm leading-normal'>
+                                        <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                            Nombre
                                         </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Paciente
+                                        <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                            Apellido
                                         </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Responsable
+                                        <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                            Cedula
                                         </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Tipo
+                                        <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                            Direccion
                                         </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Raza
-                                        </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Sexo
-                                        </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Color
-                                        </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            No. de Tarjeta
-                                        </th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide'>
-                                            Castrado/Esterilizado
+                                        <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                            Telefono
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr className='bg-white'>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">01</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Luna Herrera</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Obed Herrera</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Perro</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Mestizo</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Cafe</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Femenino</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">01-050223</a>
-                                        </td>
-                                        <td className='p-3 text-sm text-gray-700'>
-                                            <a href="#">Si</a>
-                                        </td>
-                                    </tr>
+                                <tbody className='bg-white text-gray-600 text-sm devide-y devide-gray-200'>
+                                        {currentUsers.map(responsable => (
+                                            <tr key={responsable.nombre} className='border-b border-gray-200 hover:bg-gray-100 '>
+                                                <td className='py-4 px-6 text-left whitespace-nowrap font-semibold'>{responsable.nombre}</td>
+                                                <td className='py-3 px-6 text-left'>{responsable.apellido}</td>
+                                                <td className='py-3 px-6 text-left'>{responsable.cedula}</td>
+                                                <td className='py-3 px-6 text-left'>{responsable.direccion}</td>
+                                                <td className='py-3 px-6 text-left'>{responsable.telefono}</td>
+                                            </tr>
+                                        ))}
                                 </tbody>
 
                             </table>
-                        </div>
-                        
+                            <div className='flex justify-center mt-4'>
+                                    <nav>
+                                        <ul className='flex items-center'>
+                                            {Array(Math.ceil(filteredUsers.length / responsablePerPage)).fill().map((_,i)=>(
+                                                <li key={i}>
+                                                    <button
+                                                        className={`px-3 py-2 mx-1 rounded-md font-medium ${
+                                                            currentPage === i+1
+                                                            ? 'bg-gray-900 text-white'
+                                                            : 'bg-white text-gray-900'
+                                                        } hover:bg-gray-100 focus:outline-none`}
+                                                        onClick={()=> handlePageChange(i+1)}
+                                                    >
+                                                        {i+1}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </nav>
+                                </div>
+                        </div> 
+                        </div>  
                     </div>   
                 </div>
             </div>

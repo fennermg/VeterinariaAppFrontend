@@ -3,37 +3,56 @@ import '../../../src/index.css';
 import ModalRoot from '../Modals/components/ModalRoot';
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from '../Modals/AddPatient';
-import Table, { SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useEffect } from 'react';
-import axios from 'axios';
-import { getPatients } from '../../Services/Services';
+import { deletePatient, getPatients } from '../../Services/Services';
 
 export default function Patients(){
 
     const [patients, setPatients] = useState([]);
+    const [filter, setFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [patientsPerPage] = useState(10);
+    const [selectedPatientId, setSelectedResponsableId] = useState(null);
+    const [reload, setReload] = useState(false);
 
     useEffect(()=>{
       getPatients().then(response => setPatients(response.data));
-    },[])
+      setReload(false);
+    },[reload])
 
-    const columns = React.useMemo(() => [
-        {
-          Header: "Nombre",
-          accessor: 'nombre',
-          Cell: clickeableCell,
-        },
-      ], [])
-    
-    const data = React.useMemo(() => patients)
+    const handleFilterChange = (event) => {
+      const value = event.target.value.toLowerCase();
+      setFilter(value);
+      setCurrentPage(1);
+    }
+
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    }
+
+    async function handleDelete(id){
+      try{
+        const response = await deletePatient(id);
+        setReload(true);  
+      }catch(e){
+        alert("Error al eliminar al paciente")
+      }
+    }
+
+    const filteredUsers = patients.filter(patient => patient.nombre.toLowerCase().includes(filter));
+
+    const indexOfLastUser = currentPage * patientsPerPage;
+    const indexOfFirstUser = indexOfLastUser - patientsPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
     const addModal = () => {
-        ModalService.open(AddPatient);
-      };
+        ModalService.open(AddPatient, setReload);
+    };
 
     return(
-        <div className='max-h-screen grid grid-col-1 lg:grid-cols-6'>
+        <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
             {/* Sidebar */}
             <Sidebar/>
             {/* Header */}
@@ -57,11 +76,90 @@ export default function Patients(){
                                         Agregar
                                     </button>  
                             </div>
-                            <div className='mt-5 md:w-[100%]'>
-                             <Table columns={columns} data={data} />
-                            </div>   
+                            <div className='mt-5'>
+                                <input
+                                    className='border rounded py-2 px-3 mb-4'
+                                    type='text'
+                                    placeholder='Filtrar por usuario'
+                                    value={filter}
+                                    onChange={handleFilterChange}
+                                />
+                                <table className='w-full shadow border-b rounded-md border-collapse table-auto'>
+                                    <thead>
+                                        <tr className='bg-gray-50 text-gray-600 uppercase text-sm leading-normal'>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Nombre
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Raza
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Sexo
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Especie
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Color
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Castrado
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Acciones
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='bg-white text-gray-600 text-sm devide-y devide-gray-200'>
+                                        {currentUsers.map(patient => (
+                                            <tr key={patient._id} className='border-b border-gray-200 hover:bg-gray-100 '>
+                                                <td className='py-4 px-6 text-left whitespace-nowrap font-semibold'>{patient.nombre}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.raza}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.sexo}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.especie}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.color}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.castrado}</td>
+                                                <td className='py-3 px-6 text-left'>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(patient._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Borrar
+                                                  </button>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(patient._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Editar
+                                                  </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <div className='flex justify-center mt-4'>
+                                    <nav>
+                                        <ul className='flex items-center'>
+                                            {Array(Math.ceil(filteredUsers.length / patientsPerPage)).fill().map((_,i)=>(
+                                                <li key={i}>
+                                                    <button
+                                                        className={`px-3 py-2 mx-1 rounded-md font-medium ${
+                                                            currentPage === i+1
+                                                            ? 'bg-gray-900 text-white'
+                                                            : 'bg-white text-gray-900'
+                                                        } hover:bg-gray-100 focus:outline-none`}
+                                                        onClick={()=> handlePageChange(i+1)}
+                                                    >
+                                                        {i+1}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>    
                         </div>
-                    </div> 
+                    </div>
                </div>
             </div>
         </div>   

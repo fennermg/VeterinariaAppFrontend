@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import { RiDashboardLine, 
     RiHealthBookLine, 
@@ -9,14 +10,26 @@ import { RiDashboardLine,
     RiMenuFill,
     RiTeamFill,
     } from 'react-icons/ri';
+import axios from 'axios';
+import { logout } from '../../Services/Services';
+
+ 
+
 
 export default function Sidebar(){
-
+    const history = useNavigate();
     const [sidebar, setSidebar] = useState(false);
     const handleSidebar = () =>{
         setSidebar(!sidebar);
     }
-
+    function Logout(){
+        logout().then(response => {
+            if(response.status == 200){
+                
+                history("/");
+            }
+        })
+    }
     return(
         <div className=''>
             <div className={`fixed lg:static w-[80%] md:w-[40%] lg:w-full top-0 z-50 bg-white transition-all ${
@@ -76,8 +89,9 @@ export default function Sidebar(){
                     </nav>
                     {/* Logout */}
                     <div className='flex flex-col gap-4'>
-                        <a href = 'http://localhost:3000' 
-                        className='flex items-center gap-4 hover:bg-violet-500 p-4 text-base text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'>
+                        <a
+                        className='flex items-center gap-4 hover:bg-violet-500 p-4 text-base text-gray-400 font-semibold hover:text-white rounded-lg transition-colors'
+                        onClick={Logout}>
                             <RiLogoutBoxRLine/>
                             Salir
                         </a>

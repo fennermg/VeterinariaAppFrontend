@@ -13,6 +13,16 @@ export const fetchAPi = async (data) =>{
     })
 }
 
+export const fetchPatient = async (data) =>{
+    const {nombre} = data
+    return axios({
+        method: 'post',
+        url: 'http://localhost:5000/api/paciente/',
+        data: data,
+        headers: {'Content-Type' : 'application/json'}
+    })
+}
+
 export const fetchUser = async (data) =>{
     const {username, password, role} = data
     return axios({
@@ -51,4 +61,37 @@ export const getPatients = async()=>{
         headers: {'Content-Type' : 'application/json'}
     })
 
+};
+
+export const getResponsable = async()=>{
+    /*const response = await axios('http://localhost:5000/api/user/');
+    const data = await response.json();
+    return data;*/
+
+    return axios({
+        method: 'get',
+        url: 'http://localhost:5000/api/responsable/',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+};
+
+export const logout = async()=>{
+    /*const response = await axios('http://localhost:5000/api/user/');
+    const data = await response.json();
+    return data;*/
+
+    return axios({
+        method: 'get',
+        url: 'http://localhost:5000/api/auth/logout',
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const deletePatient = async(id)=>{
+    return axios({
+        method: 'delete',
+        url: `http://localhost:5000/api/paciente/${id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
 };

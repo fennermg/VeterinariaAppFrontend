@@ -68,7 +68,7 @@ export default function Dashboard(){
       const data = React.useMemo(() => getData(), [])
 
     return(
-        <div className='max-h-screen grid grid-col-1 lg:grid-cols-6 md:grid-cols-2'>
+        <div className='min-h-screen grid grid-col-1 lg:grid-cols-6 md:grid-cols-2'>
             {/* Sidebar */}
                 <Sidebar/> 
             {/* Content */}

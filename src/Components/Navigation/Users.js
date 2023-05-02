@@ -77,21 +77,21 @@ export default function Users(){
                                     value={filter}
                                     onChange={handleFilterChange}
                                 />
-                                <table className='w-full border-collapse table-auto'>
+                                <table className='w-full shadow border-b rounded-md border-collapse table-auto'>
                                     <thead>
-                                        <tr className='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
-                                            <th className='py-3 px-6 text-left'>
+                                        <tr className='bg-gray-50 text-gray-600 uppercase text-sm leading-normal'>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                                 Usuario
                                             </th>
-                                            <th className='py-3 px-6 text-left'>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                                 Rol
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className='text-gray-600 text-sm font-light'>
+                                    <tbody className='bg-white text-gray-600 text-sm devide-y devide-gray-200'>
                                         {currentUsers.map(user => (
-                                            <tr key={user.username} className='border-b border-gray-200 hover:bg-gray-100'>
-                                                <td className='py-3 px-6 text-left'>{user.username}</td>
+                                            <tr key={user.username} className='border-b border-gray-200 hover:bg-gray-100 '>
+                                                <td className='py-4 px-6 text-left whitespace-nowrap font-semibold'>{user.username}</td>
                                                 <td className='py-3 px-6 text-left'>{user.role}</td>
                                             </tr>
                                         ))}
