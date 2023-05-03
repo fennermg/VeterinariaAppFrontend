@@ -4,7 +4,7 @@ import ModalBody from "../Modals/components/ModalBody";
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from './AddPatient';
 import ModalRoot from '../Modals/components/ModalRoot';
-import {getPatients, fetchResponsable} from '../../Services/Services';
+import {getPatients, fetchResponsable, getPatient} from '../../Services/Services';
 
 const addModal = () => {
     ModalService.open(AddPatient);
@@ -14,21 +14,32 @@ export default function AddResponsable(props) {
 
     const [data, setData] = useState({});
     const [pacientes, setPacientes] = useState([]);
-    const [selectedPaciente, setSelectedPaciente] = useState({});
+    const [selectedPatient, setSelectedPatient] = useState({});
 
     const onChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value,
-            paciente: selectedPaciente,
+            paciente: selectedPatient,
         });
         console.log(data);
     }
 
     useEffect(()=>{
-        getPatients().then(response => setPacientes(response.data));
-        console.log(pacientes);
+        if(props._id){
+            getPatients(props._id).then(response => {
+                setData(response.data)
+                setSelectedPatient(response.data.patient)
+            });
+            console.log(data);
+        }
+        getPatient().then(response => setPacientes(response.data));    
     },[])
+
+    function onChangePatient(e) {
+        setSelectedPatient(e.target.value);
+        console.log(selectedPatient)
+    }
 
     async function submit(e){
         e.preventDefault();
@@ -79,6 +90,7 @@ export default function AddResponsable(props) {
                             id='nombre'
                             className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
                             onChange={onChange}
+                            value={data.nombre}
                             >
                             </input>
                             <label className='p-4 font-semibold'>
@@ -86,9 +98,11 @@ export default function AddResponsable(props) {
                             </label>
                             <input
                             type='text'
-                            name='primer_nombre'
-                            id='primer_nombre'
+                            name='apellido'
+                            id='apellido'
                             className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                            onChange={onChange}
+                            value={data.apellido}
                             >
                             </input>
                             <label className='p-4 font-semibold'>
@@ -96,9 +110,11 @@ export default function AddResponsable(props) {
                             </label>
                             <input
                             type='text'
-                            name='primer_nombre'
-                            id='primer_nombre'
+                            name='cedula'
+                            id='cedula'
                             className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                            onChange={onChange}
+                            value={data.cedula}
                             >
                             </input>
                             <label className='p-4 font-semibold'>
@@ -106,9 +122,11 @@ export default function AddResponsable(props) {
                             </label>
                             <input
                             type='text'
-                            name='primer_nombre'
-                            id='primer_nombre'
+                            name='direccion'
+                            id='direccion'
                             className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                            onChange={onChange}
+                            value={data.direccion}
                             >
                             </input>
                             <label className='p-4 font-semibold'>
@@ -116,31 +134,27 @@ export default function AddResponsable(props) {
                             </label>
                             <input
                             type='text'
-                            name='primer_nombre'
-                            id='primer_nombre'
+                            name='telefono'
+                            id='telefono'
                             className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                            onChange={onChange}
+                            value={data.telefono}
                             >
                             </input>
                             <label className='p-4 font-semibold'>
                                 Paciente
                             </label>
-                            <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
-                                <option
-                                value='masculino'
-                                name='masculino'
-                                id='masculino'
-                                
-                                >
-                                    Luna Herrera
-                                </option>  
-                                <option
-                                value="femenino"
-                                name='femenino'
-                                id='femenino'
-                                
-                                >
-                                    Hembra
-                                </option>
+                            <select name = 'paciente' value={selectedPatient} onChange={onChangePatient} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                            {pacientes.map(patient => (
+                                            <option
+                                                key={patient._id}
+                                                value={patient._id}
+                                                name='paciente'
+                                                id={patient._id}
+                                            >
+                                                {patient.nombre}
+                                            </option>
+                                        ))}
                             </select>
                         </div>
                         <button  
