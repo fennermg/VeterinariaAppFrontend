@@ -1,15 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from "../Modals/components/Modal";
 import ModalBody from "../Modals/components/ModalBody";
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from './AddPatient';
 import ModalRoot from '../Modals/components/ModalRoot';
+import {getPatients, fetchResponsable} from '../../Services/Services';
 
 const addModal = () => {
     ModalService.open(AddPatient);
 };
 
 export default function AddResponsable(props) {
+
+    const [data, setData] = useState({});
+    const [pacientes, setPacientes] = useState([]);
+    const [selectedPaciente, setSelectedPaciente] = useState({});
+
+    const onChange = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+            paciente: selectedPaciente,
+        });
+        console.log(data);
+    }
+
+    useEffect(()=>{
+        getPatients().then(response => setPacientes(response.data));
+        console.log(pacientes);
+    },[])
+
+    async function submit(e){
+        e.preventDefault();
+        if(data.nombre !== ""){
+            await fetchResponsable(data).then(function(response){
+                if(response.status === 200){
+                    props.close();
+                    props.setReload(true);
+                }else if(response.status === 401 || response.status === 403){
+                    alert("Hay un error con el nombre");
+                }else{
+                    alert("Error desconocido");
+                }
+            });
+        }else{
+            alert("Todos los campos son obligatorios");
+        }
+    }
   return (
     <Modal>
       <ModalBody>
@@ -31,16 +68,17 @@ export default function AddResponsable(props) {
                     </button>
                 </div>
                 <div className='bg-white py-6 px-6 lg:px-8 text-left'>
-                    <form className='space-y-6' action="#">
+                    <form className='space-y-6' onSubmit={submit}>
                         <div>
                             <label className='p-4 font-semibold'>
                                 Nombre del responsable
                             </label>
                             <input
                             type='text'
-                            name='primer_nombre'
-                            id='primer_nombre'
+                            name='nombre'
+                            id='nombre'
                             className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                            onChange={onChange}
                             >
                             </input>
                             <label className='p-4 font-semibold'>
@@ -107,13 +145,13 @@ export default function AddResponsable(props) {
                         </div>
                         <button  
                         className='text-white justify-between bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
-                        
+                        type = 'submit'
                         >
                             Guardar
                         </button>
                         <button  
                         className='text-white justify-between bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
-                        
+                        onClick={props.close}
                         >
                             Cerrar
                         </button>

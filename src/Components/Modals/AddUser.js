@@ -5,11 +5,7 @@ import ModalRoot from '../Modals/components/ModalRoot';
 import { fetchUser } from "../../Services/Services";
 
 export default function AddUser(props) {
-    const [data, setdata] = useState({
-        username: "",
-        password: "",
-        role: "",
-      });
+    const [data, setdata] = useState({});
     
       const onChange = (e) => {
         setdata({

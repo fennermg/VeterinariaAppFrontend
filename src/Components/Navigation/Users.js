@@ -3,14 +3,11 @@ import {useState} from 'react';
 import '../../../src/index.css';
 import ModalRoot from '../Modals/components/ModalRoot';
 import ModalService from '../Modals/services/ModalService';
-import Table, { SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
-import { RiMenuFill, RiCloseLine, } from 'react-icons/ri';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import AddUser from '../Modals/AddUser';
-import { fetchUser, getUsers } from '../../Services/Services';
+import { deleteUser, getUsers } from '../../Services/Services';
 import { useEffect } from 'react';
-import axios from 'axios';
 
 export default function Users(){
 
@@ -18,10 +15,12 @@ export default function Users(){
     const [filter, setFilter] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
+    const [reload, setReload] = useState(false);
 
     useEffect(()=>{
         getUsers().then(response => setUsers(response.data));
-    },[]);
+        setReload(false);
+    },[reload]);
 
     const handleFilterChange = (event) => {
         const value = event.target.value.toLowerCase();
@@ -33,6 +32,15 @@ export default function Users(){
         setCurrentPage(pageNumber);
     }
 
+    async function handleDelete(id){
+        try{
+            const response = await deleteUser(id);
+            setReload(true);
+        }catch(e){
+            alert("Error al eliminar al usuario")
+        }
+    }
+
     const filteredUsers = users.filter(user => user.username.toLowerCase().includes(filter));
 
     const indexOfLastUser = currentPage * usersPerPage;
@@ -40,7 +48,7 @@ export default function Users(){
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
     const addModal = () => {
-        ModalService.open(AddUser);
+        ModalService.open(AddUser, setReload);
     };
 
     return(
@@ -58,8 +66,8 @@ export default function Users(){
                         <h1 className='text-3xl font-semibold'>Usuarios</h1>
                     </div>
                     {/* Table */}
-                    <div className=' bg-white mt-6 border-2 rounded-xl p-12 flex items-center lg:w-[100%] w-full'>
-                        <div className=' container md:-w4/5 wl:w-3/5 mx-auto'>
+                    <div className='bg-white mt-6 rounded-xl p-12 flex items-center lg:w-[90%] w-full'>
+                        <div>
                             <div className='relative'>
                                 <ModalRoot/>
                                     <button  
@@ -86,6 +94,9 @@ export default function Users(){
                                             <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                                 Rol
                                             </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Acciones
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className='bg-white text-gray-600 text-sm devide-y devide-gray-200'>
@@ -93,6 +104,20 @@ export default function Users(){
                                             <tr key={user.username} className='border-b border-gray-200 hover:bg-gray-100 '>
                                                 <td className='py-4 px-6 text-left whitespace-nowrap font-semibold'>{user.username}</td>
                                                 <td className='py-3 px-6 text-left'>{user.role}</td>
+                                                <td className='py-3 px-6 text-left'>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(user._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Borrar
+                                                  </button>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(user._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Editar
+                                                  </button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>

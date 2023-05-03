@@ -23,6 +23,16 @@ export const fetchPatient = async (data) =>{
     })
 }
 
+export const fetchResponsable = async (data) =>{
+    const {nombre} = data
+    return axios({
+        method: 'post',
+        url: 'http://localhost:5000/api/responsable/',
+        data: data,
+        headers: {'Content-Type' : 'application/json'}
+    })
+}
+
 export const fetchUser = async (data) =>{
     const {username, password, role} = data
     return axios({
@@ -63,6 +73,15 @@ export const getPatients = async()=>{
 
 };
 
+export const getPatient = async(id)=>{
+    return axios({
+        method: 'get',
+        url: `http://localhost:5000/api/paciente/${id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+};
+
 export const getResponsable = async()=>{
     /*const response = await axios('http://localhost:5000/api/user/');
     const data = await response.json();
@@ -71,6 +90,19 @@ export const getResponsable = async()=>{
     return axios({
         method: 'get',
         url: 'http://localhost:5000/api/responsable/',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+};
+
+export const getAppointments = async()=>{
+    /*const response = await axios('http://localhost:5000/api/user/');
+    const data = await response.json();
+    return data;*/
+
+    return axios({
+        method: 'get',
+        url: 'http://localhost:5000/api/Cita/',
         headers: {'Content-Type' : 'application/json'}
     })
 
@@ -92,6 +124,39 @@ export const deletePatient = async(id)=>{
     return axios({
         method: 'delete',
         url: `http://localhost:5000/api/paciente/${id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const deleteResponsable = async(id)=>{
+    return axios({
+        method: 'delete',
+        url: `http://localhost:5000/api/responsable/${id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const deleteAppointment = async(id)=>{
+    return axios({
+        method: 'delete',
+        url: `http://localhost:5000/api/Cita/${id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const deleteUser = async(id)=>{
+    return axios({
+        method: 'delete',
+        url: `http://localhost:5000/api/user/${id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const updatePatien = async(data)=>{
+    return axios({
+        method: 'patch',
+        data:data,
+        url: `http://localhost:5000/api/paciente/${data._id}`,
         headers: {'Content-Type' : 'application/json'}
     })
 };

@@ -7,7 +7,7 @@ import ModalService from '../Modals/services/ModalService';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useEffect } from 'react';
-import { getResponsable } from '../../Services/Services';
+import { getResponsable, deleteResponsable } from '../../Services/Services';
 
 export default function Responsables(){
 
@@ -15,10 +15,13 @@ export default function Responsables(){
     const [filter, setFilter] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [responsablePerPage] = useState(10);
+    const [selectedPatientId, setSelectedPatientId] = useState({});
+    const [reload, setReload] = useState(false);
 
     useEffect(()=>{
       getResponsable().then(response => setResponsable(response.data));
-    },[])
+      setReload(false);
+    },[reload])
 
     const handleFilterChange = (event) => {
       const value = event.target.value.toLowerCase();
@@ -28,6 +31,15 @@ export default function Responsables(){
 
     const handlePageChange = (pageNumber) => {
       setCurrentPage(pageNumber);
+    }
+
+    async function handleDelete(id){
+        try{
+            const response = await deleteResponsable(id);
+            setReload(true);
+        }catch(e){
+            alert("Error al eliminar al responsable")
+        }
     }
 
     const filteredUsers = responsable.filter(responsable => responsable.nombre.toLowerCase().includes(filter));
@@ -41,10 +53,10 @@ export default function Responsables(){
       };
 
     return(
-        <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
+        <div className='max-h-screen grid grid-col-1 lg:grid-cols-6'>
             {/* Sidebar */}
+            
             <Sidebar/>
-
             {/* Header */}
             <div className='col-span-5'>
                 <Header/>
@@ -93,6 +105,9 @@ export default function Responsables(){
                                         <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                             Telefono
                                         </th>
+                                        <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Acciones
+                                            </th>
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white text-gray-600 text-sm devide-y devide-gray-200'>
@@ -103,6 +118,20 @@ export default function Responsables(){
                                                 <td className='py-3 px-6 text-left'>{responsable.cedula}</td>
                                                 <td className='py-3 px-6 text-left'>{responsable.direccion}</td>
                                                 <td className='py-3 px-6 text-left'>{responsable.telefono}</td>
+                                                <td className='py-3 px-6 text-left'>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(responsable._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Borrar
+                                                  </button>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(responsable._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Editar
+                                                  </button>
+                                                </td>
                                             </tr>
                                         ))}
                                 </tbody>

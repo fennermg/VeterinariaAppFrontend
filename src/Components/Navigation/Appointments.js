@@ -1,131 +1,57 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from 'react';
 import '../../../src/index.css';
 import ModalRoot from '../Modals/components/ModalRoot';
 import ModalService from '../Modals/services/ModalService';
-import AddPatient from '../Modals/AddPatient';
 import AddAppointment from '../Modals/AddAppointment';
-import Table, { AvatarCell, SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
-
-
-import { 
-    RiMenuFill,
-    RiCloseLine,
-    } from 'react-icons/ri';
+import Table, { SelectColumnFilter, StatusPill, clickeableCell} from '../Table/Table'
 import Sidebar from './Sidebar';
 import Header from './Header';
-
-const getData = () => {
-    const data = [
-      {
-        fecha: '04/20/2023',
-        hora: '02:00 PM',
-        motivo: 'Cirugia',
-        estado: 'Programado',
-        tiempo_estimado: '30 min',
-        paciente: 'Luna Herrera',
-        responsable: 'Obed Herrera',
-      },
-      {
-        fecha: '04/20/2023',
-        hora: '09:00 AM',
-        motivo: 'Monitoreo',
-        estado: 'Programado',
-        tiempo_estimado: '30 min',
-        paciente: 'Sir Browns',
-        responsable: 'Franck Melendez',
-      },
-      {
-        fecha: '04/21/2023',
-        hora: '01:00 PM',
-        motivo: 'Monitoreo',
-        estado: 'Programado',
-        tiempo_estimado: '30 min',
-        paciente: 'Max',
-        responsable: 'Bosco Castillo',
-      },
-      {
-        fecha: '04/21/2023',
-        hora: '02:00 PM',
-        motivo: 'Cirugia',
-        estado: 'Programado',
-        tiempo_estimado: '30 min',
-        paciente: 'Merlina',
-        responsable: 'Orlando Varela',
-      },
-      {
-        fecha: '04/21/2023',
-        hora: '04:00 PM',
-        motivo: 'Monitoreo',
-        estado: 'Programado',
-        tiempo_estimado: '30 min',
-        paciente: 'Hilda Rosa Maria',
-        responsable: 'Orlando Varela',
-      },
-      {
-        fecha: '04/22/2023',
-        hora: '02:00 PM',
-        motivo: 'Cirugia',
-        estado: 'Programado',
-        tiempo_estimado: '30 min',
-        paciente: 'Neko Vargas',
-        responsable: 'Diego Vargas',
-      },
-    ]
-    return [...data, ...data, ...data]
-  }
-
+import { deleteAppointment, getAppointments } from '../../Services/Services';
 
 export default function Appointments(){
 
-    const [sidebar, setSidebar] = useState(false);
-    const handleSidebar = () =>{
-        setSidebar(!sidebar);
+    const [appointments, setAppointments] = useState([]);
+    const [filter, setFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [appointmentsPerPage] = useState(10);
+    const [reload, setReload] = useState(false);
+
+    useEffect(()=>{
+      getAppointments().then(response => setAppointments(response.data));
+      setReload(false);
+    },[reload])
+
+    const handleFilterChange = (event) => {
+      const value = event.target.value.toLowerCase();
+      setFilter(value);
+      setCurrentPage(1);
     }
 
-    const columns = React.useMemo(() => [
-        {
-          Header: "Fecha",
-          accessor: 'fecha',
-          Cell: clickeableCell,
-        },
-        {
-          Header: "Hora",
-          accessor: 'hora',
-        },
-        {
-          Header: "Motivo",
-          accessor: 'motivo',
-          Cell: StatusPill,
-        },
-        {
-          Header: "Estado",
-          accessor: 'estado',
-        },
-        {
-          Header: "Tiempo estimado",
-          accessor: 'tiempo_estimado',
-        },
-        {
-          Header: "Paciente",
-          accessor: 'paciente',
-        },
-        {
-          Header: "Responsable",
-          accessor: 'responsable',
-          Filter: SelectColumnFilter,  // new
-          filter: 'includes',
-        },
-      ], [])
-    
-      const data = React.useMemo(() => getData(), [])
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    }
+
+    async function handleDelete(id){
+      try{
+        const response = await deleteAppointment(id);
+        setReload(true);
+      }catch(e){
+        alert("Error al eliminar la cita")
+      }
+    }
+
+    const filteredAppointments = appointments.filter(appointment => appointment.motivo.toLowerCase().includes(filter));
+    const indexOfLastAppointment = currentPage * appointmentsPerPage;
+    const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+    const currentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
 
     const addModal = () => {
-        ModalService.open(AddAppointment);
+        ModalService.open(AddAppointment, setReload);
       };
 
     return(
-        <div className='max-h-screen grid grid-col-1 lg:grid-cols-6'>
+        <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
             {/* Sidebar */}
             <Sidebar/>
 
@@ -151,11 +77,84 @@ export default function Appointments(){
                                     </button>  
                             </div>
                             <div className='mt-5'>
-                             <Table columns={columns} data={data} />
-                            </div>
-                            
-                        </div>
-                        
+                                <input
+                                    className='border rounded py-2 px-3 mb-4'
+                                    type='text'
+                                    placeholder='Filtrar por usuario'
+                                    value={filter}
+                                    onChange={handleFilterChange}
+                                />
+                                <table className='w-full shadow border-b rounded-md border-collapse table-auto'>
+                                    <thead>
+                                        <tr className='bg-gray-50 text-gray-600 uppercase text-sm leading-normal'>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Motivo
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Fecha
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Hora
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Estado
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Tiempo estimado
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Acciones
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='bg-white text-gray-600 text-sm devide-y devide-gray-200'>
+                                        {currentAppointments.map(appointment => (
+                                            <tr key={appointment._id} className='border-b border-gray-200 hover:bg-gray-100 '>
+                                                <td className='py-4 px-6 text-left whitespace-nowrap font-semibold'>{appointment.motivo}</td>
+                                                <td className='py-3 px-6 text-left'>{appointment.fecha}</td>
+                                                <td className='py-3 px-6 text-left'>{appointment.hora}</td>
+                                                <td className='py-3 px-6 text-left'>{appointment.estado}</td>
+                                                <td className='py-3 px-6 text-left'>{appointment.tiempoEst}</td>
+                                                <td className='py-3 px-6 text-left p-8'>
+                                                  <button
+                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(appointment._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Borrar
+                                                  </button>
+                                                  <button
+                                                    className='bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleDelete(appointment._id)} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Editar
+                                                  </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <div className='flex justify-center mt-4'>
+                                    <nav>
+                                        <ul className='flex items-center'>
+                                            {Array(Math.ceil(filteredAppointments.length / appointmentsPerPage)).fill().map((_,i)=>(
+                                                <li key={i}>
+                                                    <button
+                                                        className={`px-3 py-2 mx-1 rounded-md font-medium ${
+                                                            currentPage === i+1
+                                                            ? 'bg-gray-900 text-white'
+                                                            : 'bg-white text-gray-900'
+                                                        } hover:bg-gray-100 focus:outline-none`}
+                                                        onClick={()=> handlePageChange(i+1)}
+                                                    >
+                                                        {i+1}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>     
+                        </div>     
                     </div> 
                </div>
             </div>

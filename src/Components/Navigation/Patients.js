@@ -41,14 +41,22 @@ export default function Patients(){
       }
     }
 
+    function handleEdit(patient){
+        try{
+            addModal(patient);
+        }catch(e){
+            alert("Error al cargar al paciente")
+        }
+    }
+
     const filteredUsers = patients.filter(patient => patient.nombre.toLowerCase().includes(filter));
 
     const indexOfLastUser = currentPage * patientsPerPage;
     const indexOfFirstUser = indexOfLastUser - patientsPerPage;
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-    const addModal = () => {
-        ModalService.open(AddPatient, setReload);
+    const addModal = (patient) => {
+        ModalService.open(AddPatient, patient);
     };
 
     return(
@@ -105,7 +113,7 @@ export default function Patients(){
                                             <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                                 Castrado
                                             </th>
-                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                            <th className='py-3 px-4 text-gray-400 text-center text-xs font-medium uppercase tracking-wider'>
                                                 Acciones
                                             </th>
                                         </tr>
@@ -119,16 +127,16 @@ export default function Patients(){
                                                 <td className='py-3 px-6 text-left'>{patient.especie}</td>
                                                 <td className='py-3 px-6 text-left'>{patient.color}</td>
                                                 <td className='py-3 px-6 text-left'>{patient.castrado}</td>
-                                                <td className='py-3 px-6 text-left'>
+                                                <td className='py-3 px-4 text-left flex space-x-4'>
                                                   <button
-                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    className='bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
                                                     onClick={() => handleDelete(patient._id)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Borrar
                                                   </button>
                                                   <button
-                                                    className='bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
-                                                    onClick={() => handleDelete(patient._id)} // Llamar a handleDelete con el índice correspondiente
+                                                    className='bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={() => handleEdit(patient)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Editar
                                                   </button>
