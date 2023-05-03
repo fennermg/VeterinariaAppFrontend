@@ -13,34 +13,36 @@ const addModal = () => {
 
 export default function AddPatient(props) {
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState({responsable:{_id:""}});
     const [responsables, setResponsables] = useState([]);
-    const [selectedResponsable, setSelectedResponsable] = useState({});
+    //const [selectedResponsable, setSelectedResponsable] = useState({});
 
     const onChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value,
-            responsable: selectedResponsable,
+            //responsable: selectedResponsable,
         });
-        console.log(data);
     };
+
+    useEffect(() => {
+        console.log(data);
+    }, [data])
+    
 
     useEffect(() => {
         if (props._id) {
             getPatient(props._id).then(response =>{
                 setData(response.data)
-                setSelectedResponsable(response.data.responsable)
             })
             console.log(data)
         }
         getResponsable().then(response => setResponsables(response.data));
     }, [])
 
-    function onChangeResponsable(e) {
+   /* function onChangeResponsable(e) {
         setSelectedResponsable(e.target.value);
-        console.log(selectedResponsable)
-    }
+    }*/
 
     async function submit(e) {
         e.preventDefault();
@@ -139,7 +141,7 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Responsable
                                     </label>
-                                    <select name='responsable' value={selectedResponsable} onChange={onChangeResponsable} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name='responsable' value={data.responsable._id} onChange={onChange} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
                                         {responsables.map(responsable => (
                                             <option
                                                 key={responsable._id}
@@ -154,7 +156,7 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Sexo
                                     </label>
-                                    <select name='sexo' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
+                                    <select name='sexo' value= {data.sexo}className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
                                             value='Masculino'
                                             name='masculino'
@@ -187,7 +189,7 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Castrado
                                     </label>
-                                    <select name='castrado' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
+                                    <select name='castrado' value={data.castrado}className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
                                             value={true}
                                             name='si'
@@ -225,14 +227,14 @@ export default function AddPatient(props) {
                                         name='fechaNacimiento'
                                         id='fechaNacimiento'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
-                                        value={data.fechaNacimiento}
+                                        value={new Date(data.fechaNacimiento).toLocaleDateString("en-US")}
                                         onChange={onChange}
                                     >
                                     </input>
                                     <label className='p-4 font-semibold'>
                                         Convive con mas animales?
                                     </label>
-                                    <select name = 'conviveOtros' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
+                                    <select name = 'conviveOtros' value={data.conviveOtros} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
                                             value={true}
                                             name='si'
@@ -253,7 +255,7 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Convive con ninos?
                                     </label>
-                                    <select name='conviveNinos' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
+                                    <select name='conviveNinos' value={data.conviveNinos} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
                                             value={true}
                                             name='si'
@@ -274,7 +276,7 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Convive con ancianos?
                                     </label>
-                                    <select name='conviveAncianos' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
+                                    <select name='conviveAncianos' value={data.conviveAncianos} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
                                             value={true}
                                             name='si'
@@ -295,7 +297,7 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Estado
                                     </label>
-                                    <select name='estado' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
+                                    <select name='estado' value={data.estado} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
                                             value='Activo'
                                             name='si'
