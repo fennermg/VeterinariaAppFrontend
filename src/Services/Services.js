@@ -14,7 +14,6 @@ export const fetchAPi = async (data) =>{
 }
 
 export const fetchPatient = async (data) =>{
-    const {nombre} = data
     return axios({
         method: 'post',
         url: 'http://localhost:5000/api/paciente/',
