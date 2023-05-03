@@ -117,9 +117,11 @@ export default function AddPatient(props) {
                                     </label>
                                     <input
                                         type='text'
-                                        name='tipo'
-                                        id='tipo'
+                                        name='especie'
+                                        id='especie'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                        onChange={onChange}
+                                        value={data.especie}
                                     >
                                     </input>
                                     <label className='p-4 font-semibold' >
@@ -130,6 +132,8 @@ export default function AddPatient(props) {
                                         name='raza'
                                         id='raza'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                        onChange={onChange}
+                                        value={data.raza}
                                     >
                                     </input>
                                     <label className='p-4 font-semibold'>
@@ -150,17 +154,17 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Sexo
                                     </label>
-                                    <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name='sexo' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
-                                            value='masculino'
+                                            value='Masculino'
                                             name='masculino'
                                             id='masculino'
-
+                                            
                                         >
                                             Macho
                                         </option>
                                         <option
-                                            value="femenino"
+                                            value='Femenino'
                                             name='femenino'
                                             id='femenino'
 
@@ -176,14 +180,16 @@ export default function AddPatient(props) {
                                         name='color'
                                         id='color'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                        value={data.color}
+                                        onChange={onChange}
                                     >
                                     </input>
                                     <label className='p-4 font-semibold'>
                                         Castrado
                                     </label>
-                                    <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name='castrado' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
-                                            value='Si'
+                                            value={true}
                                             name='si'
                                             id='si'
 
@@ -191,7 +197,7 @@ export default function AddPatient(props) {
                                             Si
                                         </option>
                                         <option
-                                            value="No"
+                                            value={false}
                                             name='no'
                                             id='no'
 
@@ -200,11 +206,35 @@ export default function AddPatient(props) {
                                         </option>
                                     </select>
                                     <label className='p-4 font-semibold'>
+                                        Numero de Tarjeta
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name='numeroTarjeta'
+                                        id='numeroTarjeta'
+                                        className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                        value={data.numeroTarjeta}
+                                        onChange={onChange}
+                                    >
+                                    </input>
+                                    <label className='p-4 font-semibold'>
+                                        Fecha de Nacimiento
+                                    </label>
+                                    <input
+                                        type='date'
+                                        name='fechaNacimiento'
+                                        id='fechaNacimiento'
+                                        className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                        value={data.fechaNacimiento}
+                                        onChange={onChange}
+                                    >
+                                    </input>
+                                    <label className='p-4 font-semibold'>
                                         Convive con mas animales?
                                     </label>
-                                    <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name = 'conviveOtros' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
-                                            value='Si'
+                                            value={true}
                                             name='si'
                                             id='si'
 
@@ -212,7 +242,7 @@ export default function AddPatient(props) {
                                             Si
                                         </option>
                                         <option
-                                            value="No"
+                                            value={false}
                                             name='no'
                                             id='no'
 
@@ -223,9 +253,9 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Convive con ninos?
                                     </label>
-                                    <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name='conviveNinos' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
-                                            value='Si'
+                                            value={true}
                                             name='si'
                                             id='si'
 
@@ -233,7 +263,7 @@ export default function AddPatient(props) {
                                             Si
                                         </option>
                                         <option
-                                            value="No"
+                                            value={false}
                                             name='no'
                                             id='no'
 
@@ -244,9 +274,9 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Convive con ancianos?
                                     </label>
-                                    <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name='conviveAncianos' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
-                                            value='Si'
+                                            value={true}
                                             name='si'
                                             id='si'
 
@@ -254,7 +284,7 @@ export default function AddPatient(props) {
                                             Si
                                         </option>
                                         <option
-                                            value="No"
+                                            value={false}
                                             name='no'
                                             id='no'
 
@@ -265,9 +295,9 @@ export default function AddPatient(props) {
                                     <label className='p-4 font-semibold'>
                                         Estado
                                     </label>
-                                    <select className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
+                                    <select name='estado' className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent' onChange={onChange}>
                                         <option
-                                            value='Si'
+                                            value='Activo'
                                             name='si'
                                             id='si'
 
@@ -275,7 +305,7 @@ export default function AddPatient(props) {
                                             Activo
                                         </option>
                                         <option
-                                            value="No"
+                                            value='Inactivo'
                                             name='no'
                                             id='no'
 
