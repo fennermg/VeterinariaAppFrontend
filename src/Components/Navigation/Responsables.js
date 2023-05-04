@@ -15,7 +15,6 @@ export default function Responsables(){
     const [filter, setFilter] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [responsablePerPage] = useState(10);
-    const [selectedPatientId, setSelectedPatientId] = useState({});
     const [reload, setReload] = useState(false);
 
     useEffect(()=>{
@@ -35,7 +34,7 @@ export default function Responsables(){
 
     async function handleDelete(id){
         try{
-            const response = await deleteResponsable(id);
+            await deleteResponsable(id);
             setReload(true);
         }catch(e){
             alert("Error al eliminar al responsable")
@@ -118,15 +117,15 @@ export default function Responsables(){
                                                 <td className='py-3 px-6 text-left'>{responsable.cedula}</td>
                                                 <td className='py-3 px-6 text-left'>{responsable.direccion}</td>
                                                 <td className='py-3 px-6 text-left'>{responsable.telefono}</td>
-                                                <td className='py-3 px-6 text-left'>
+                                                <td className='py-3 px-4 text-left flex space-x-4'>
                                                   <button
-                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    className='bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
                                                     onClick={() => handleDelete(responsable._id)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Borrar
                                                   </button>
                                                   <button
-                                                    className='bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    className='bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
                                                     onClick={() => handleDelete(responsable._id)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Editar

@@ -60,7 +60,14 @@ export default function Sidebar(){
                                     Pacientes
                                 </Link>
                             </li> 
-                            
+                            <li>
+                                <Link 
+                                to="http://localhost:3000/Revisiones" 
+                                className='flex items-center gap-4 hover:bg-violet-500 p-4 text-gray-400 text-base font-semibold hover:text-white rounded-lg transition-colors'>
+                                    <RiFolderUserLine/>
+                                    Revisiones
+                                </Link>
+                            </li>
                             <li>
                                 <Link 
                                 to="http://localhost:3000/Appointments" 

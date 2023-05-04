@@ -23,7 +23,6 @@ export const fetchPatient = async (data) =>{
 }
 
 export const fetchResponsable = async (data) =>{
-    const {nombre} = data
     return axios({
         method: 'post',
         url: 'http://localhost:5000/api/responsable/',
@@ -33,15 +32,19 @@ export const fetchResponsable = async (data) =>{
 }
 
 export const fetchUser = async (data) =>{
-    const {username, password, role} = data
     return axios({
         method: 'post',
         url: 'http://localhost:5000/api/user/',
-        data: {
-            username: username,
-            password:password,
-            role: role
-        },
+        data: data,
+        headers: {'Content-Type' : 'application/json'}
+    })
+}
+
+export const fetchAppointment = async (data) =>{
+    return axios({
+        method: 'post',
+        url: 'http://localhost:5000/api/cita/',
+        data: data,
         headers: {'Content-Type' : 'application/json'}
     })
 }
@@ -101,7 +104,7 @@ export const getAppointments = async()=>{
 
     return axios({
         method: 'get',
-        url: 'http://localhost:5000/api/Cita/',
+        url: 'http://localhost:5000/api/cita/',
         headers: {'Content-Type' : 'application/json'}
     })
 
@@ -156,6 +159,24 @@ export const updatePatien = async(data)=>{
         method: 'patch',
         data:data,
         url: `http://localhost:5000/api/paciente/${data._id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const updateResponsable = async(data)=>{
+    return axios({
+        method: 'patch',
+        data:data,
+        url: `http://localhost:5000/api/responsable/${data._id}`,
+        headers: {'Content-Type' : 'application/json'}
+    })
+};
+
+export const updateAppointment = async(data)=>{
+    return axios({
+        method: 'patch',
+        data:data,
+        url: `http://localhost:5000/api/cita/${data._id}`,
         headers: {'Content-Type' : 'application/json'}
     })
 };

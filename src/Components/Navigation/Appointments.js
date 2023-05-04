@@ -115,9 +115,9 @@ export default function Appointments(){
                                                 <td className='py-3 px-6 text-left'>{appointment.hora}</td>
                                                 <td className='py-3 px-6 text-left'>{appointment.estado}</td>
                                                 <td className='py-3 px-6 text-left'>{appointment.tiempoEst}</td>
-                                                <td className='py-3 px-6 text-left p-8'>
+                                                <td className='py-3 px-4 text-left flex space-x-4'>
                                                   <button
-                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                    className='bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
                                                     onClick={() => handleDelete(appointment._id)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Borrar

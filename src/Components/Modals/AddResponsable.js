@@ -4,7 +4,7 @@ import ModalBody from "../Modals/components/ModalBody";
 import ModalService from '../Modals/services/ModalService';
 import AddPatient from './AddPatient';
 import ModalRoot from '../Modals/components/ModalRoot';
-import {getPatients, fetchResponsable, getPatient} from '../../Services/Services';
+import {getPatients, fetchResponsable, getPatient, updateResponsable} from '../../Services/Services';
 
 const addModal = () => {
     ModalService.open(AddPatient);
@@ -12,51 +12,64 @@ const addModal = () => {
 
 export default function AddResponsable(props) {
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState({paciente:{_id:""}});
     const [pacientes, setPacientes] = useState([]);
-    const [selectedPatient, setSelectedPatient] = useState({});
 
     const onChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value,
-            paciente: selectedPatient,
         });
-        console.log(data);
     }
+
+    useEffect(()=>{
+        console.log(data);
+    },[data])
 
     useEffect(()=>{
         if(props._id){
             getPatients(props._id).then(response => {
                 setData(response.data)
-                setSelectedPatient(response.data.patient)
             });
             console.log(data);
         }
         getPatient().then(response => setPacientes(response.data));    
     },[])
 
-    function onChangePatient(e) {
-        setSelectedPatient(e.target.value);
-        console.log(selectedPatient)
-    }
-
     async function submit(e){
         e.preventDefault();
-        if(data.nombre !== ""){
-            await fetchResponsable(data).then(function(response){
-                if(response.status === 200){
-                    props.close();
-                    props.setReload(true);
-                }else if(response.status === 401 || response.status === 403){
-                    alert("Hay un error con el nombre");
-                }else{
-                    alert("Error desconocido");
-                }
-            });
+        if(props._id){
+            if(data.nombre !== ""){
+                await updateResponsable(data).then(function(response){
+                    if(response.status === 200){
+                        props.close();
+                        props.setReload(true);
+                    }else if(response.status === 401 || response.status === 403){
+                        alert("Hay un error con el nombre");
+                    }else{
+                        alert("Error desconocido");
+                    }
+                });
+            }else{
+                alert("Todos los campos son obligatorios");
+            }
         }else{
-            alert("Todos los campos son obligatorios");
+            if(data.nombre !== ""){
+                await fetchResponsable(data).then(function(response){
+                    if(response.status === 200){
+                        props.close();
+                        props.setReload(true);
+                    }else if(response.status === 401 || response.status === 403){
+                        alert("Hay un error con el nombre");
+                    }else{
+                        alert("Error desconocido");
+                    }
+                });
+            }else{
+                alert("Todos los campos son obligatorios");
+            }
         }
+        
     }
   return (
     <Modal>
@@ -141,21 +154,6 @@ export default function AddResponsable(props) {
                             value={data.telefono}
                             >
                             </input>
-                            <label className='p-4 font-semibold'>
-                                Paciente
-                            </label>
-                            <select name = 'paciente' value={selectedPatient} onChange={onChangePatient} className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'>
-                            {pacientes.map(patient => (
-                                            <option
-                                                key={patient._id}
-                                                value={patient._id}
-                                                name='paciente'
-                                                id={patient._id}
-                                            >
-                                                {patient.nombre}
-                                            </option>
-                                        ))}
-                            </select>
                         </div>
                         <button  
                         className='text-white justify-between bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'

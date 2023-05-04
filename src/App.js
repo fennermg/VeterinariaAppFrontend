@@ -7,6 +7,7 @@ import {BrowserRouter as Router, Routes, Route, Link, ProtectedRoute} from "reac
 import Appointments from "./Components/Navigation/Appointments";
 import Users from "./Components/Navigation/Users";
 import axios from "axios";
+import Revision from "./Components/Navigation/Revision";
 
 axios.defaults.withCredentials = true;
 
@@ -22,6 +23,7 @@ function App(){
             <Route path = "/Responsables" element = {<Responsables/>}/>
             <Route path = "/Appointments" element = {<Appointments/>}/>
             <Route path = "/Users" element = {<Users/>}/>
+            <Route path = "/Revisiones" element = {<Revision/>}/>
           </Routes>
         </Router>
       </div>

@@ -15,13 +15,11 @@ export default function AddPatient(props) {
 
     const [data, setData] = useState({responsable:{_id:""}});
     const [responsables, setResponsables] = useState([]);
-    //const [selectedResponsable, setSelectedResponsable] = useState({});
 
     const onChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value,
-            //responsable: selectedResponsable,
         });
     };
 
@@ -35,14 +33,9 @@ export default function AddPatient(props) {
             getPatient(props._id).then(response =>{
                 setData(response.data)
             })
-            console.log(data)
         }
         getResponsable().then(response => setResponsables(response.data));
     }, [])
-
-   /* function onChangeResponsable(e) {
-        setSelectedResponsable(e.target.value);
-    }*/
 
     async function submit(e) {
         e.preventDefault();

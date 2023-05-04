@@ -7,6 +7,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { useEffect } from 'react';
 import { deletePatient, getPatients } from '../../Services/Services';
+import AddAppointment from '../Modals/AddAppointment';
 
 export default function Patients(){
 
@@ -57,6 +58,10 @@ export default function Patients(){
 
     const addModal = (patient) => {
         ModalService.open(AddPatient, patient);
+    };
+
+    const addModalCita = () => {
+        ModalService.open(AddAppointment);
     };
 
     return(
@@ -113,6 +118,9 @@ export default function Patients(){
                                             <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                                 Castrado
                                             </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Responsable
+                                            </th>
                                             <th className='py-3 px-4 text-gray-400 text-center text-xs font-medium uppercase tracking-wider'>
                                                 Acciones
                                             </th>
@@ -126,7 +134,8 @@ export default function Patients(){
                                                 <td className='py-3 px-6 text-left'>{patient.sexo}</td>
                                                 <td className='py-3 px-6 text-left'>{patient.especie}</td>
                                                 <td className='py-3 px-6 text-left'>{patient.color}</td>
-                                                <td className='py-3 px-6 text-left'>{patient.castrado}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.castrado ? 'Si' : 'No'}</td>
+                                                <td className='py-3 px-6 text-left'>{patient.responsable.nombre || ""}</td>
                                                 <td className='py-3 px-4 text-left flex space-x-4'>
                                                   <button
                                                     className='bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
@@ -139,6 +148,12 @@ export default function Patients(){
                                                     onClick={() => handleEdit(patient)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Editar
+                                                  </button>
+                                                  <button
+                                                    className='bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+                                                    onClick={addModalCita} // Llamar a handleDelete con el índice correspondiente
+                                                  >
+                                                    Cita
                                                   </button>
                                                 </td>
                                             </tr>
