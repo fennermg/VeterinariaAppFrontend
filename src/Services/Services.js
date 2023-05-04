@@ -98,13 +98,18 @@ export const getResponsable = async()=>{
 };
 
 export const getAppointments = async()=>{
-    /*const response = await axios('http://localhost:5000/api/user/');
-    const data = await response.json();
-    return data;*/
-
     return axios({
         method: 'get',
         url: 'http://localhost:5000/api/cita/',
+        headers: {'Content-Type' : 'application/json'}
+    })
+
+};
+
+export const getAppointment = async(id)=>{
+    return axios({
+        method: 'get',
+        url: `http://localhost:5000/api/cita/${id}`,
         headers: {'Content-Type' : 'application/json'}
     })
 

@@ -41,14 +41,22 @@ export default function Appointments(){
       }
     }
 
+    function handleEdit(appointment){
+        try{
+            addModal(appointment);
+        }catch(e){
+            alert("Error al cargar la cita")
+        }
+    }
+
     const filteredAppointments = appointments.filter(appointment => appointment.motivo.toLowerCase().includes(filter));
     const indexOfLastAppointment = currentPage * appointmentsPerPage;
     const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
     const currentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
 
-    const addModal = () => {
-        ModalService.open(AddAppointment, setReload);
-      };
+    const addModal = (appointment) => {
+        ModalService.open(AddAppointment, appointment);
+    };
 
     return(
         <div className='min-h-screen grid grid-col-1 lg:grid-cols-6'>
@@ -103,6 +111,9 @@ export default function Appointments(){
                                                 Tiempo estimado
                                             </th>
                                             <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
+                                                Paciente
+                                            </th>
+                                            <th className='py-3 px-6 text-gray-400 text-left text-xs font-medium uppercase tracking-wider'>
                                                 Acciones
                                             </th>
                                         </tr>
@@ -111,20 +122,15 @@ export default function Appointments(){
                                         {currentAppointments.map(appointment => (
                                             <tr key={appointment._id} className='border-b border-gray-200 hover:bg-gray-100 '>
                                                 <td className='py-4 px-6 text-left whitespace-nowrap font-semibold'>{appointment.motivo}</td>
-                                                <td className='py-3 px-6 text-left'>{appointment.fecha}</td>
+                                                <td className='py-3 px-6 text-left'>{appointment.fecha.substr(0,10)}</td>
                                                 <td className='py-3 px-6 text-left'>{appointment.hora}</td>
                                                 <td className='py-3 px-6 text-left'>{appointment.estado}</td>
                                                 <td className='py-3 px-6 text-left'>{appointment.tiempoEst}</td>
+                                                <td className='py-3 px-6 text-left'>{appointment.paciente.nombre || ""}</td>
                                                 <td className='py-3 px-4 text-left flex space-x-4'>
                                                   <button
-                                                    className='bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-                                                    onClick={() => handleDelete(appointment._id)} // Llamar a handleDelete con el índice correspondiente
-                                                  >
-                                                    Borrar
-                                                  </button>
-                                                  <button
                                                     className='bg-green-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
-                                                    onClick={() => handleDelete(appointment._id)} // Llamar a handleDelete con el índice correspondiente
+                                                    onClick={() => handleEdit(appointment)} // Llamar a handleDelete con el índice correspondiente
                                                   >
                                                     Editar
                                                   </button>

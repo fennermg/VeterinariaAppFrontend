@@ -13,7 +13,16 @@ const addModal = () => {
 
 export default function AddPatient(props) {
 
-    const [data, setData] = useState({responsable:{_id:""}});
+    const [data, setData] = useState({
+        fechaNacimiento:'2023-01-01', 
+        responsable:{_id:""}, 
+        sexo: 'Masculino',
+        estado: 'Activo',
+        castrado: true,
+        conviveOtros: true,
+        conviveNinos: true,
+        conviveAncianos: true
+     });
     const [responsables, setResponsables] = useState([]);
 
     const onChange = (e) => {
@@ -220,7 +229,7 @@ export default function AddPatient(props) {
                                         name='fechaNacimiento'
                                         id='fechaNacimiento'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
-                                        value={new Date(data.fechaNacimiento).toLocaleDateString("en-US")}
+                                        value={data.fechaNacimiento.substr(0, 10)}
                                         onChange={onChange}
                                     >
                                     </input>

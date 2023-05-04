@@ -106,12 +106,6 @@ export default function Users(){
                                                 <td className='py-3 px-6 text-left'>{user.role}</td>
                                                 <td className='py-3 px-6 text-left'>
                                                   <button
-                                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-                                                    onClick={() => handleDelete(user._id)} // Llamar a handleDelete con el índice correspondiente
-                                                  >
-                                                    Borrar
-                                                  </button>
-                                                  <button
                                                     className='bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
                                                     onClick={() => handleDelete(user._id)} // Llamar a handleDelete con el índice correspondiente
                                                   >

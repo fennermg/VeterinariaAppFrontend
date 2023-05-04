@@ -6,7 +6,7 @@ import AddPatient from './AddPatient';
 import ModalRoot from '../Modals/components/ModalRoot';
 import 'flowbite';
 import { useEffect } from 'react';
-import { fetchAppointment, getAppointments, getPatient, updateAppointment, getResponsable, getPatients } from '../../Services/Services';
+import { fetchAppointment, getAppointment, getAppointments, getPatient, updateAppointment, getResponsable, getPatients } from '../../Services/Services';
 
 const addModal = () => {
     ModalService.open(AddPatient);
@@ -14,7 +14,12 @@ const addModal = () => {
 
 export default function AddAppointment(props) {
 
-    const [data, setData] = useState({paciente:{id:""}});
+    const [data, setData] = useState({
+        paciente:{id:""},
+        fecha:"2023-01-01",
+        hora:'12:00',
+        estado: 'Activo',
+        tiempoEst: 1});
     const [patients, setPatients] = useState([]);
 
     const onChange = (e) => {
@@ -30,7 +35,7 @@ export default function AddAppointment(props) {
 
     useEffect(() => {
         if(props._id){
-            getAppointments(props._id).then(response => {
+            getAppointment(props._id).then(response => {
                 setData(response.data)
             })
         }
@@ -39,20 +44,44 @@ export default function AddAppointment(props) {
 
     async function submit(e){
         e.preventDefault();
-        if(data.motivo !== ""){
-                console.log(data)
-                await fetchAppointment(data).then(function (response){
-                    if(response.status === 200){
-                        props.close();
-                    }else if (response.status === 401 || response.status === 403){
-                        alert("Hay un error")
-                    }else{
-                        alert("Error desconocido")
-                    }
-                });
+
+        try {
+            if(props._id){
+                if(data.motivo !== ""){
+                    console.log(data)
+                    await updateAppointment(data).then(function (response){
+                        if(response.status === 200){
+                            props.close();
+                        }else if (response.status === 401 || response.status === 403){
+                            alert("Hay un error")
+                        }else{
+                            alert("Error desconocido")
+                        }
+                    });
+                }else{
+                    alert("Todos los campos son obligatorios")
+                }
             }else{
-                alert("Todos los campos son obligatorios")
+                if(data.motivo !== ""){
+                    console.log(data)
+                    await fetchAppointment(data).then(function (response){
+                        if(response.status === 200){
+                            props.close();
+                        }else if (response.status === 401 || response.status === 403){
+                            alert("Hay un error")
+                        }else{
+                            alert("Error desconocido")
+                        }
+                    });
+                }else{
+                    alert("Todos los campos son obligatorios")
+                }
             }
+            
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
   return (
@@ -98,7 +127,7 @@ export default function AddAppointment(props) {
                                         name='fecha'
                                         id='fecha'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
-                                        value={new Date(data.fecha).toLocaleDateString("en-US")}
+                                        value={data.fecha.substr(0, 10)}
                                         onChange={onChange}
                                     >
                                     </input>
@@ -110,7 +139,7 @@ export default function AddAppointment(props) {
                                         name='hora'
                                         id='hora'
                                         className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
-                                        value={new Date(data.hora).toLocaleDateString("en-US")}
+                                        value={data.hora}
                                         onChange={onChange}
                                     >
                                     </input>
@@ -150,6 +179,18 @@ export default function AddAppointment(props) {
                                             </option>
                                         ))}
                                     </select>
+                                    <label className='p-4 font-semibold'>
+                                        Tiempo Estimado
+                                    </label>
+                                    <input
+                                        type='number'
+                                        name='tiempoEst'
+                                        id='tiempoEst'
+                                        className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                        onChange={onChange}
+                                        value={data.tiempoEst}
+                                    >
+                                    </input>
                             </div>
                         <button  
                         className='text-white justify-between bg-purple-600 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5'
